@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Great Minds Creating</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="assets/logos/logo-main.png" alt="Great Minds Creating">
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="admin-dashboard.html" class="active">Admin Dashboard</a></li>
+            </ul>
+            <div class="nav-auth">
+                <button id="logoutBtn" class="btn-auth">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container" style="padding-top: 2rem;">
+        <h1 style="color: var(--primary-orange); margin-bottom: 2rem;">Admin Dashboard</h1>
+
+        <!-- Data Overview -->
+        <section class="dashboard-stats">
+            <h2>Overview</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Fans</h3>
+                    <p class="stat-number" id="totalFans">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Bookings</h3>
+                    <p class="stat-number" id="totalBookings">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Orders</h3>
+                    <p class="stat-number" id="totalOrders">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Active Polls</h3>
+                    <p class="stat-number" id="activePolls">0</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Add Release -->
+        <section class="admin-section">
+            <h2>Add Release</h2>
+            <form id="addReleaseForm" class="admin-form">
+                <input type="text" id="releaseTitle" placeholder="Title" required>
+                <input type="text" id="releaseArtist" placeholder="Artist" required>
+                <input type="text" id="releaseMembers" placeholder="Members (comma separated)">
+                <select id="releaseType" required>
+                    <option value="">Select Type</option>
+                    <option value="EP">EP</option>
+                    <option value="Album">Album</option>
+                    <option value="Single">Single</option>
+                </select>
+                <input type="url" id="releaseSpotify" placeholder="Spotify Link" required>
+                <input type="url" id="releaseAppleMusic" placeholder="Apple Music Link">
+                <input type="url" id="releaseCoverImage" placeholder="Cover Image URL" required>
+                <input type="date" id="releaseDate" required>
+                <button type="submit" class="btn-primary">Add Release</button>
+            </form>
+        </section>
+
+        <!-- Add Video -->
+        <section class="admin-section">
+            <h2>Add Video</h2>
+            <form id="addVideoForm" class="admin-form">
+                <input type="text" id="videoTitle" placeholder="Video Title" required>
+                <input type="text" id="videoArtist" placeholder="Artist" required>
+                <input type="url" id="videoYouTube" placeholder="YouTube URL" required>
+                <select id="videoCategory" required>
+                    <option value="">Select Category</option>
+                    <option value="music-videos">Music Video</option>
+                    <option value="bts">Behind the Scenes</option>
+                    <option value="studio">Studio Session</option>
+                    <option value="clips">Short Clip</option>
+                    <option value="interviews">Interview</option>
+                </select>
+                <input type="date" id="videoReleaseDate" required>
+                <button type="submit" class="btn-primary">Add Video</button>
+            </form>
+        </section>
+
+        <!-- Add Event -->
+        <section class="admin-section">
+            <h2>Add Event</h2>
+            <form id="addEventForm" class="admin-form">
+                <input type="text" id="eventTitle" placeholder="Event Title" required>
+                <input type="text" id="eventLocation" placeholder="Location" required>
+                <input type="datetime-local" id="eventDate" required>
+                <input type="url" id="eventTicketLink" placeholder="Ticket/RSVP Link">
+                <button type="submit" class="btn-primary">Add Event</button>
+            </form>
+        </section>
+
+        <!-- Add Merch -->
+        <section class="admin-section">
+            <h2>Add Merch</h2>
+            <form id="addMerchForm" class="admin-form">
+                <input type="text" id="merchName" placeholder="Product Name" required>
+                <input type="number" step="0.01" id="merchPrice" placeholder="Price" required>
+                <input type="url" id="merchImageURL" placeholder="Image URL" required>
+                <input type="text" id="merchSizes" placeholder="Size Options (e.g., S,M,L,XL)">
+                <select id="merchCategory" required>
+                    <option value="">Select Category</option>
+                    <option value="tshirts">T-Shirts</option>
+                    <option value="hoodies">Hoodies</option>
+                    <option value="hats">Hats</option>
+                    <option value="accessories">Accessories</option>
+                </select>
+                <button type="submit" class="btn-primary">Add Merch</button>
+            </form>
+        </section>
+
+        <!-- Create Poll -->
+        <section class="admin-section">
+            <h2>Create Poll</h2>
+            <form id="createPollForm" class="admin-form">
+                <input type="text" id="pollQuestion" placeholder="Poll Question" required>
+                <div id="pollOptionsContainer">
+                    <input type="text" class="poll-option-input" placeholder="Option 1" required>
+                    <input type="text" class="poll-option-input" placeholder="Option 2" required>
+                </div>
+                <button type="button" class="btn-secondary" onclick="addPollOption()">+ Add Option</button>
+                <label style="display: flex; align-items: center; gap: 10px; margin: 1rem 0;">
+                    <input type="checkbox" id="pollActive" checked>
+                    <span>Active</span>
+                </label>
+                <button type="submit" class="btn-primary">Create Poll</button>
+            </form>
+        </section>
+
+        <!-- Poll Results -->
+        <section class="admin-section">
+            <h2>Poll Results</h2>
+            <div id="pollResultsContainer"></div>
+        </section>
+
+    </main>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+    <script src="config/firebase-config.js"></script>
+    <script src="js/admin-dashboard.js"></script>
+</body>
+</html>
