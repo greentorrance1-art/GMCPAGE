@@ -1,0 +1,95 @@
+================================================================================
+QUICK START GUIDE
+================================================================================
+
+BEFORE DEPLOYMENT
+-----------------
+
+1. Add your Firebase credentials
+   File: config/firebase-config.js
+   Lines: 7-13
+
+2. Add your Stripe key
+   File: js/merch.js
+   Line: 13
+
+3. Add your logo
+   Folder: assets/logos/
+   File: logo-main.png
+
+DEPLOYMENT
+----------
+
+Upload ALL files to your web server maintaining folder structure.
+
+FIRST TIME SETUP
+----------------
+
+1. Visit: yoursite.com/admin-dashboard.html
+2. Login with admin email
+3. Add your first release
+4. Add your first poll
+5. Done!
+
+ADMIN EMAILS
+------------
+
+Default admins (if no Firestore collection):
+- torrancegreen22@yahoo.com
+- jaybandobaby4@gmail.com
+- beats4bblazo@gmail.com
+
+CREATE ADMIN IN FIRESTORE
+-------------------------
+
+Collection: admins
+Document:
+{
+  email: "youremail@example.com",
+  role: "super_admin",
+  active: true
+}
+
+FEATURES
+--------
+
+✓ Top music player (loads newest release)
+✓ Recent drops (shows 3 newest)
+✓ Admin dashboard (add content)
+✓ Artist pages (3 artists)
+✓ Merch store (Stripe checkout)
+✓ Fan polls (voting system)
+✓ Events (RSVP system)
+✓ Booking form (service requests)
+
+URLS
+----
+
+Homepage: /index.html
+Admin: /admin-dashboard.html
+Artists: /jay-bando-baby.html, /b-blazo.html, /cash-create.html
+Services: /create-hub.html
+Store: /merch.html
+
+TROUBLESHOOTING
+---------------
+
+Problem: Firebase not working
+Solution: Check config/firebase-config.js credentials
+
+Problem: Admin can't access dashboard
+Solution: Add email to 'admins' collection in Firestore
+
+Problem: Top player not showing
+Solution: Add a release via admin dashboard
+
+Problem: Stripe checkout errors
+Solution: Check publishable key in js/merch.js
+
+SUPPORT
+-------
+
+Check browser console (F12) for error messages.
+See README.txt for full documentation.
+
+================================================================================
