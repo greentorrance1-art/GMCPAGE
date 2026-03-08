@@ -1,0 +1,25 @@
+LOGO PLACEMENT INSTRUCTIONS
+===========================
+
+Place your Great Minds Creating logo images in this folder.
+
+Required Logo:
+--------------
+logo-main.png - Main logo for navigation (recommended size: 500px wide, transparent background)
+
+The logo images you provided should be renamed and placed here:
+1. The orange graffiti-style logo
+2. The web/globe logo
+3. Any other brand variations
+
+Supported formats:
+- PNG (recommended for transparency)
+- JPG
+- SVG (scalable, best for web)
+
+After adding logos, update the reference in the HTML files if you use a different filename.
+
+Current reference in HTML:
+<img src="assets/logos/logo-main.png" alt="Great Minds Creating">
+
+If you use a different filename, update all HTML files with the correct path.
