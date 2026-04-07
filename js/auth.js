@@ -24,30 +24,33 @@ let userPermissions = null;
 // AUTHENTICATION STATE
 // ============================================
 
-// Listen for auth state changes
-if (typeof firebase !== 'undefined') {
+if (typeof firebase !== 'undefined' && firebase.auth) {
     firebase.auth().onAuthStateChanged(function(user) {
         currentUser = user;
 
         if (user) {
-            // User is signed in
             handleUserLogin(user);
         } else {
-            // User is signed out
             handleUserLogout();
         }
     });
+} else {
+    console.warn('Firebase not initialized. Admin features unavailable.');
 }
 
 // ============================================
 // LOGIN HANDLING
 // ============================================
 
-// Login form submission
 const loginForm = document.getElementById('loginForm');
 if (loginForm) {
     loginForm.addEventListener('submit', async function(e) {
         e.preventDefault();
+
+        if (typeof firebase === 'undefined' || !firebase.auth) {
+            alert('Firebase is not configured yet. Please add your Firebase credentials to config/firebase-config.js');
+            return;
+        }
 
         const email = document.getElementById('loginEmail').value;
         const password = document.getElementById('loginPassword').value;
@@ -56,11 +59,9 @@ if (loginForm) {
             const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
             console.log('Login successful:', userCredential.user.email);
 
-            // Close modal
             const loginModal = document.getElementById('loginModal');
             if (loginModal) loginModal.style.display = 'none';
 
-            // Reset form
             loginForm.reset();
 
         } catch (error) {
@@ -74,6 +75,7 @@ if (loginForm) {
 const logoutBtn = document.getElementById('logoutBtn');
 if (logoutBtn) {
     logoutBtn.addEventListener('click', async function() {
+        if (typeof firebase === 'undefined' || !firebase.auth) return;
         try {
             await firebase.auth().signOut();
             console.log('Logout successful');
@@ -90,7 +92,6 @@ if (logoutBtn) {
 function handleUserLogin(user) {
     console.log('User logged in:', user.email);
 
-    // Check if user is admin
     const adminData = ADMIN_USERS[user.email.toLowerCase()];
 
     if (adminData) {
@@ -100,7 +101,6 @@ function handleUserLogin(user) {
         userPermissions = { role: 'fan', access: [] };
     }
 
-    // Update UI
     const loginBtn = document.getElementById('loginBtn');
     const logoutBtn = document.getElementById('logoutBtn');
 
@@ -121,13 +121,11 @@ function handleUserLogout() {
     currentUser = null;
     userPermissions = null;
 
-    // Hide all admin controls
     const adminControls = document.querySelectorAll('.admin-controls');
     adminControls.forEach(control => {
         control.style.display = 'none';
     });
 
-    // Update UI
     const loginBtn = document.getElementById('loginBtn');
     const logoutBtn = document.getElementById('logoutBtn');
 
@@ -143,22 +141,21 @@ function showAdminControls(adminData) {
     const adminControls = document.querySelectorAll('.admin-controls');
 
     adminControls.forEach(control => {
-        // Check if this is a general admin control (no artist specified)
         if (!control.classList.contains('artist-admin')) {
-            // Show for super admin only
             if (adminData.role === 'super_admin') {
                 control.style.display = 'flex';
             }
         } else {
-            // Artist-specific control
             const artist = control.dataset.artist;
-
             if (adminData.role === 'super_admin' || adminData.access.includes(artist)) {
                 control.style.display = 'flex';
             }
         }
     });
 }
+
+// Make showAdminControls globally available for admin-dashboard
+window.showAdminControls = showAdminControls;
 
 // ============================================
 // FAN SIGNUP
@@ -180,17 +177,16 @@ if (fanSignupForm) {
         };
 
         try {
-            // Save to Firestore
             if (typeof firebase !== 'undefined' && firebase.firestore) {
                 await firebase.firestore().collection('fans').add(fanData);
                 console.log('Fan signup successful');
                 alert('Welcome to Great Minds Creating! Check your phone for exclusive updates.');
+            } else {
+                alert('Signup system is not connected yet. Please try again later.');
+                return;
             }
 
-            // Close modal
             closeFanModal();
-
-            // Reset form
             fanSignupForm.reset();
 
         } catch (error) {
@@ -204,7 +200,6 @@ if (fanSignupForm) {
 // FOLLOW ARTIST
 // ============================================
 
-// Follow buttons
 const followBtns = document.querySelectorAll('.btn-follow');
 followBtns.forEach(btn => {
     btn.addEventListener('click', async function() {
@@ -221,12 +216,10 @@ followBtns.forEach(btn => {
             const isFollowing = this.classList.contains('following');
 
             if (isFollowing) {
-                // Unfollow
                 await unfollowArtist(currentUser.uid, artist);
                 this.classList.remove('following');
                 this.textContent = 'Follow';
             } else {
-                // Follow
                 await followArtist(currentUser.uid, artist);
                 this.classList.add('following');
                 this.textContent = 'Following';
@@ -269,28 +262,26 @@ async function unfollowArtist(userId, artist) {
 
 async function checkFollowStatus() {
     if (!currentUser) return;
+    if (typeof firebase === 'undefined' || !firebase.firestore) return;
 
     const followBtns = document.querySelectorAll('.btn-follow');
 
     for (const btn of followBtns) {
         const artist = btn.dataset.artist;
 
-        if (typeof firebase !== 'undefined' && firebase.firestore) {
-            const snapshot = await firebase.firestore()
-                .collection('follows')
-                .where('userId', '==', currentUser.uid)
-                .where('artist', '==', artist)
-                .get();
+        const snapshot = await firebase.firestore()
+            .collection('follows')
+            .where('userId', '==', currentUser.uid)
+            .where('artist', '==', artist)
+            .get();
 
-            if (!snapshot.empty) {
-                btn.classList.add('following');
-                btn.textContent = 'Following';
-            }
+        if (!snapshot.empty) {
+            btn.classList.add('following');
+            btn.textContent = 'Following';
         }
     }
 }
 
-// Check follow status on page load
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(checkFollowStatus, 1000);
 });
