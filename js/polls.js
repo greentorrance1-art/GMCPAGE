@@ -1,251 +1,135 @@
-// Great Minds Creating - Polls System
-// Fan Voting and Poll Management
+I’m attaching the full GMC project files. Read everything first before changing anything. Prioritize the home screen, admin editing permissions, CASSH Create spelling, and the broken bottom music player. Only send back the files you actually changed.
 
-// Sample polls
-const SAMPLE_POLLS = [
-    {
-        id: 'poll1',
-        question: 'Favorite Artist of the Month',
-        options: ['Jay Bando Baby', 'B Blazo', 'Cash Create'],
-        votes: {}
-    },
-    {
-        id: 'poll2',
-        question: 'Favorite Song of the Month',
-        options: ['Track 1', 'Track 2', 'Track 3', 'Track 4'],
-        votes: {}
-    },
-    {
-        id: 'poll3',
-        question: 'Which Song Should Get a Music Video Next?',
-        options: ['Song A', 'Song B', 'Song C'],
-        votes: {}
-    }
-];
+You are acting as a senior front-end + Firebase debugging engineer.
 
-// ============================================
-// LOAD POLLS
-// ============================================
+I am giving you the full codebase/files for my music group website/project: GREAT MINDS CREATING (GMC).
 
-async function loadPolls() {
-    const pollsContainer = document.getElementById('pollsContainer');
-    if (!pollsContainer) return;
+Your job is to audit the files carefully and fix every bug you can find, but for this round you must PRIORITIZE THE HOME SCREEN and the ADMIN/EDITING SYSTEM tied to it.
 
-    try {
-        let polls = [];
+IMPORTANT:
+Do NOT redesign the project.
+Do NOT change working sections just because you think they can look better.
+Do NOT restructure the whole app unless absolutely necessary for the bug fix.
+Do NOT remove features that already exist.
+Do NOT touch unrelated code.
+Do NOT send explanations without action.
+I need precise fixes with a very high probability of success.
 
-        // Try to load from Firestore
-        if (typeof firebase !== 'undefined' && firebase.firestore) {
-            const snapshot = await firebase.firestore()
-                .collection('polls')
-                .where('active', '==', true)
-                .get();
+MAIN OBJECTIVES FOR THIS ROUND
 
-            if (!snapshot.empty) {
-                polls = snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data()
-                }));
-            }
-        }
+1. ADMIN LOGIN / ADMIN ACCESS MUST WORK
+- My admin login should work properly.
+- When I log in as an admin, I should actually be recognized as an admin in the system.
+- Admin-only controls should appear only for admins.
+- Non-admin users / public visitors must NOT see edit controls, admin buttons, or any content management tools.
+- Normal users should still be able to sign up and log in for member access, exclusive drops, early notifications, clothing/music updates, etc.
+- Public visitors should still be able to browse normally without gaining editing access.
 
-        // Use sample polls if none in database
-        if (polls.length === 0) {
-            polls = SAMPLE_POLLS;
-        }
+2. ADMINS MUST BE ABLE TO EDIT THE HOME SCREEN
+- All admins should have full control over home screen content.
+- Admins should be able to edit the content that appears on the home page directly through the intended admin/editing system.
+- If this is currently partially built, broken, disconnected from Firebase, hidden incorrectly, or not saving properly, fix it.
+- Make sure home screen edits persist correctly in Firebase / Firestore / the current database structure being used.
+- Make sure the UI updates correctly after save.
+- Make sure saved content still loads correctly for public users.
+- If there are missing permission checks, fix them.
+- If there are missing event listeners, broken selectors, wrong IDs, wrong field names, or Firebase path mismatches, fix them.
 
-        // Render polls
-        pollsContainer.innerHTML = '';
-        polls.forEach(poll => {
-            const pollCard = createPollCard(poll);
-            pollsContainer.appendChild(pollCard);
-        });
+3. CASH CREATE NAME MUST BE CORRECT EVERYWHERE
+- The artist name must be spelled exactly:
+CASSH Create
+- Fix this across the entire platform wherever it is wrong.
+- Check homepage, artist sections, artist page, admin/editor areas, stored data defaults, hardcoded text, buttons, headings, cards, navigation, metadata, and any Firebase-loaded content.
+- Do not miss variant misspellings like:
+  - Cash Create
+  - Cass Create
+  - C-A-S-H
+  - any incorrect capitalization or missing S
+The correct spelling everywhere is:
+CASSH Create
 
-    } catch (error) {
-        console.error('Error loading polls:', error);
-        // Show sample polls on error
-        pollsContainer.innerHTML = '';
-        SAMPLE_POLLS.forEach(poll => {
-            const pollCard = createPollCard(poll);
-            pollsContainer.appendChild(pollCard);
-        });
-    }
-}
+4. CASSH CREATE ARTIST PAGE MUST BE ADMIN-EDITABLE
+- I as an admin should be able to edit what is on my personal artist page for CASSH Create.
+- If this page already has an admin editing system, fix it so it works.
+- If it is supposed to pull editable content from Firebase but is failing, find and fix the issue.
+- If it is hardcoded and that is preventing admin control, convert only what is necessary so admins can manage the content without breaking the rest of the site.
+- Do not overbuild. Keep it practical and working.
 
-// ============================================
-// CREATE POLL CARD
-// ============================================
+5. HOME SCREEN MUSIC PLAYER / BOTTOM PLAYER MUST WORK
+- At the bottom of the screen there should be music playing / a working music player.
+- Right now it is not working.
+- I already set things up on Firebase, so inspect the actual reason it is failing instead of guessing.
+- Find whether the issue is caused by:
+  - broken Firebase Storage URLs
+  - bad file paths
+  - auth rules
+  - autoplay restrictions
+  - bad event wiring
+  - wrong audio source assignment
+  - missing DOM elements
+  - player initialization happening before data loads
+  - muted/autoplay browser conflicts
+  - broken playlist logic
+  - fallback logic failing
+  - broken artist/song object structure
+- Fix the player so it reliably loads and plays music as intended.
+- If autoplay is blocked by browser behavior, implement the cleanest realistic fallback so the player still works once the user interacts.
+- The player should not look broken or dead.
+- If there is supposed to be a “top music” or latest-release logic, make sure it actually resolves to a valid playable source.
 
-function createPollCard(poll) {
-    const card = document.createElement('div');
-    card.className = 'poll-card';
-    card.dataset.pollId = poll.id;
+6. HOME SCREEN BUG SWEEP
+While prioritizing the above, inspect the home screen for any other obvious bugs and fix them too, including:
+- broken buttons
+- broken links
+- missing images
+- console errors
+- Firebase read/write failures
+- elements not rendering
+- admin controls not toggling correctly
+- sign-up / login UI bugs related to home page logic
+- duplicated listeners
+- bad imports
+- incorrect collection/document names
+- spelling inconsistencies
+- sections failing silently
 
-    const title = document.createElement('h3');
-    title.textContent = poll.question;
-    card.appendChild(title);
+TECHNICAL EXPECTATIONS
+- Read the existing files carefully before changing anything.
+- Trace the actual current logic first.
+- Respect the current project structure as much as possible.
+- Keep Firebase-compatible logic clean and consistent.
+- Preserve existing sign up / login capability for regular users.
+- Preserve any existing admin architecture if it can be repaired instead of rebuilt.
+- If admin roles are supposed to be based on email matching, custom claims, Firestore roles, or an admin list, find the existing intended method and repair it correctly.
+- Make sure the final solution is secure enough that public users cannot access editing functionality just by toggling CSS or exposing buttons.
 
-    const optionsContainer = document.createElement('div');
-    optionsContainer.className = 'poll-options';
+WHAT I NEED BACK FROM YOU
+1. A short diagnosis of the real root causes you found.
+2. The exact files you changed.
+3. The fully updated code for ONLY the files you changed.
+4. Clear notes on anything I need to configure in Firebase, if truly necessary.
+5. Make sure your solution is copy-paste ready.
 
-    poll.options.forEach(option => {
-        const optionDiv = document.createElement('div');
-        optionDiv.className = 'poll-option';
-        optionDiv.textContent = option;
-        optionDiv.dataset.option = option;
+CRITICAL RULES
+- Do not send all files back.
+- Only send the updated files that were actually changed.
+- Do not rewrite unrelated sections.
+- Do not make cosmetic redesign changes unless required for a bug fix.
+- Do not break signup/login for regular users.
+- Do not remove the ability for fans/users to create accounts for exclusive drops and notifications.
+- Focus on functionality, permissions, persistence, and reliability first.
 
-        // Check if user has already voted
-        const hasVoted = checkIfVoted(poll.id);
-        if (hasVoted) {
-            optionDiv.style.pointerEvents = 'none';
-            if (hasVoted === option) {
-                optionDiv.classList.add('voted');
-            }
-        } else {
-            optionDiv.addEventListener('click', () => votePoll(poll.id, option));
-        }
+SUCCESS STATE
+The job is successful only if all of the following are true:
+- Admin login works.
+- Admin is recognized correctly.
+- Admin-only edit controls appear only for admins.
+- Admin can edit the home screen and save changes successfully.
+- Admin can edit the CASSH Create artist page successfully.
+- “CASSH Create” is spelled correctly everywhere.
+- Public users can still sign up/log in normally but cannot edit anything.
+- The bottom music player works.
+- Home page loads without obvious bugs or silent failures.
 
-        optionsContainer.appendChild(optionDiv);
-    });
-
-    card.appendChild(optionsContainer);
-
-    return card;
-}
-
-// ============================================
-// VOTE ON POLL
-// ============================================
-
-async function votePoll(pollId, option) {
-    try {
-        // Check if user is logged in
-        const user = firebase.auth().currentUser;
-
-        if (!user) {
-            alert('Please log in or sign up to vote!');
-            const loginModal = document.getElementById('loginModal');
-            if (loginModal) loginModal.style.display = 'block';
-            return;
-        }
-
-        // Check if already voted
-        const hasVoted = checkIfVoted(pollId);
-        if (hasVoted) {
-            alert('You have already voted on this poll!');
-            return;
-        }
-
-        // Save vote to Firestore
-        if (typeof firebase !== 'undefined' && firebase.firestore) {
-            await firebase.firestore().collection('votes').add({
-                pollId: pollId,
-                userId: user.uid,
-                option: option,
-                votedAt: new Date().toISOString()
-            });
-
-            // Update poll vote count
-            const pollRef = firebase.firestore().collection('polls').doc(pollId);
-            await pollRef.update({
-                [`votes.${option}`]: firebase.firestore.FieldValue.increment(1)
-            });
-        }
-
-        // Store in localStorage
-        localStorage.setItem(`poll_${pollId}`, option);
-
-        // Update UI
-        const pollCard = document.querySelector(`[data-poll-id="${pollId}"]`);
-        if (pollCard) {
-            const options = pollCard.querySelectorAll('.poll-option');
-            options.forEach(opt => {
-                opt.style.pointerEvents = 'none';
-                if (opt.dataset.option === option) {
-                    opt.classList.add('voted');
-                }
-            });
-        }
-
-        alert('Thank you for voting!');
-
-    } catch (error) {
-        console.error('Vote error:', error);
-        alert('Failed to submit vote. Please try again.');
-    }
-}
-
-// ============================================
-// CHECK IF VOTED
-// ============================================
-
-function checkIfVoted(pollId) {
-    // Check localStorage
-    return localStorage.getItem(`poll_${pollId}`);
-}
-
-// ============================================
-// ADMIN: VIEW POLL RESULTS
-// ============================================
-
-async function viewPollResults(pollId) {
-    try {
-        if (typeof firebase !== 'undefined' && firebase.firestore) {
-            const pollDoc = await firebase.firestore()
-                .collection('polls')
-                .doc(pollId)
-                .get();
-
-            if (pollDoc.exists) {
-                const poll = pollDoc.data();
-                console.log('Poll Results:', poll);
-
-                // Display results (admin only)
-                let resultsText = `Results for: ${poll.question}\n\n`;
-
-                for (const [option, votes] of Object.entries(poll.votes || {})) {
-                    resultsText += `${option}: ${votes} votes\n`;
-                }
-
-                alert(resultsText);
-            }
-        }
-    } catch (error) {
-        console.error('Error viewing results:', error);
-    }
-}
-
-// ============================================
-// ADMIN: CREATE POLL
-// ============================================
-
-async function createPoll(question, options) {
-    try {
-        if (typeof firebase !== 'undefined' && firebase.firestore) {
-            const pollData = {
-                question: question,
-                options: options,
-                votes: {},
-                active: true,
-                createdAt: new Date().toISOString()
-            };
-
-            await firebase.firestore().collection('polls').add(pollData);
-            console.log('Poll created successfully');
-
-            // Reload polls
-            await loadPolls();
-        }
-    } catch (error) {
-        console.error('Error creating poll:', error);
-        alert('Failed to create poll');
-    }
-}
-
-// ============================================
-// INITIALIZE
-// ============================================
-
-document.addEventListener('DOMContentLoaded', function() {
-    loadPolls();
-});
+Before writing code, inspect everything carefully and find the true cause of the bugs.
+Then fix them with minimal, precise changes.
