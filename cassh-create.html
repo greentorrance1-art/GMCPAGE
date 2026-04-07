@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cassh Create - Great Minds Creating</title>
+    <title>CASSH Create - Great Minds Creating</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -11,7 +11,7 @@
     <nav class="navbar" id="navbar">
         <div class="nav-container">
             <div class="logo">
-                <img src="assets/logos/logo-main.png" alt="Great Minds Creating">
+                <img src="assets/logos/logo-main.png" alt="Great Minds Creating" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'color:#FF6B35;font-weight:bold;font-size:1.2rem\'>GMC</span>'">
             </div>
             <button class="nav-toggle" id="navToggle">
                 <span></span>
@@ -22,7 +22,7 @@
                 <li><a href="index.html">Home</a></li>
                 <li><a href="jay-bando-baby.html">Jay Bando Baby</a></li>
                 <li><a href="b-blazo.html">B Blazo</a></li>
-                <li><a href="cash-create.html" class="active">Cassh Create</a></li>
+                <li><a href="cassh-create.html" class="active">CASSH Create</a></li>
                 <li><a href="create-hub.html">Create Hub</a></li>
                 <li><a href="merch.html">Merch</a></li>
             </ul>
@@ -37,8 +37,8 @@
     <section class="artist-hero">
         <div class="hero-overlay"></div>
         <div class="hero-content">
-            <h1>Cassh Create</h1>
-            <button class="btn-follow" data-artist="Cassh Create">Follow</button>
+            <h1>CASSH Create</h1>
+            <button class="btn-follow" data-artist="CASSH Create">Follow</button>
         </div>
     </section>
 
@@ -49,12 +49,12 @@
         <section class="section artist-bio">
             <div class="section-header">
                 <h2>About</h2>
-                <div class="admin-controls artist-admin" data-artist="Cassh Create" style="display: none;">
-                    <button class="btn-admin" onclick="editBio('Cassh Create')">Edit Bio</button>
+                <div class="admin-controls artist-admin" data-artist="CASSH Create" style="display: none;">
+                    <button class="btn-admin" onclick="editBio('CASSH Create')">Edit Bio</button>
                 </div>
             </div>
             <div id="artistBio" class="bio-content">
-                <p>Cassh Create is the creative visionary and driving force behind Great Minds Creating. Blending entrepreneurship with artistry, Cash brings the business mindset and creative direction that elevates the collective.</p>
+                <p>CASSH Create is the creative visionary and driving force behind Great Minds Creating. Blending entrepreneurship with artistry, CASSH brings the business mindset and creative direction that elevates the collective.</p>
             </div>
         </section>
 
@@ -62,8 +62,8 @@
         <section class="section artist-music">
             <div class="section-header">
                 <h2>Latest Songs</h2>
-                <div class="admin-controls artist-admin" data-artist="Cassh Create" style="display: none;">
-                    <button class="btn-admin" onclick="addArtistSong('Cassh Create')">+ Add Song</button>
+                <div class="admin-controls artist-admin" data-artist="CASSH Create" style="display: none;">
+                    <button class="btn-admin" onclick="addArtistSong('CASSH Create')">+ Add Song</button>
                 </div>
             </div>
             <div class="music-grid" id="artistSongs">
@@ -77,8 +77,8 @@
         <section class="section artist-videos">
             <div class="section-header">
                 <h2>Music Videos</h2>
-                <div class="admin-controls artist-admin" data-artist="Cassh Create" style="display: none;">
-                    <button class="btn-admin" onclick="addArtistVideo('Cassh Create')">+ Add Video</button>
+                <div class="admin-controls artist-admin" data-artist="CASSH Create" style="display: none;">
+                    <button class="btn-admin" onclick="addArtistVideo('CASSH Create')">+ Add Video</button>
                 </div>
             </div>
             <div class="video-grid" id="artistVideos">
@@ -94,32 +94,32 @@
         <section class="section instagram-feed">
             <h2>Instagram</h2>
             <div class="instagram-grid">
-                <div class="ig-card">
+                <a href="https://instagram.com/casshcreate" target="_blank" class="ig-card">
                     <div class="ig-placeholder">
-                        <p>@cashcreate</p>
+                        <p>@casshcreate</p>
                     </div>
-                </div>
-                <div class="ig-card">
+                </a>
+                <a href="https://instagram.com/casshcreate" target="_blank" class="ig-card">
                     <div class="ig-placeholder">
-                        <p>@cashcreate</p>
+                        <p>@casshcreate</p>
                     </div>
-                </div>
-                <div class="ig-card">
+                </a>
+                <a href="https://instagram.com/casshcreate" target="_blank" class="ig-card">
                     <div class="ig-placeholder">
-                        <p>@cashcreate</p>
+                        <p>@casshcreate</p>
                     </div>
-                </div>
+                </a>
             </div>
         </section>
 
         <!-- Social Links -->
         <section class="section social-links">
-            <h2>Follow Cassh Create</h2>
+            <h2>Follow CASSH Create</h2>
             <div class="social-buttons">
-                <a href="#" class="social-btn spotify">Spotify</a>
-                <a href="#" class="social-btn youtube">YouTube</a>
-                <a href="#" class="social-btn instagram">Instagram</a>
-                <a href="#" class="social-btn twitter">Twitter</a>
+                <a href="https://open.spotify.com" class="social-btn spotify" target="_blank">Spotify</a>
+                <a href="https://youtube.com" class="social-btn youtube" target="_blank">YouTube</a>
+                <a href="https://instagram.com/casshcreate" class="social-btn instagram" target="_blank">Instagram</a>
+                <a href="https://twitter.com/casshcreate" class="social-btn twitter" target="_blank">Twitter</a>
             </div>
         </section>
 
@@ -130,12 +130,12 @@
         <div class="player-container">
             <div class="player-info">
                 <p class="now-playing">Now Playing</p>
-                <p class="track-title">Great Minds Creating - Latest Drop</p>
+                <p class="track-title" id="playerTrackTitle">Great Minds Creating - Latest Drop</p>
             </div>
             <div class="player-controls">
                 <button class="control-btn" id="playPauseBtn">▶</button>
                 <div class="progress-bar">
-                    <div class="progress-fill"></div>
+                    <div class="progress-fill" id="progressFill"></div>
                 </div>
             </div>
         </div>
@@ -145,7 +145,7 @@
     <div id="loginModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h2>Admin Login</h2>
+            <h2>Login</h2>
             <form id="loginForm">
                 <input type="email" id="loginEmail" placeholder="Email" required>
                 <input type="password" id="loginPassword" placeholder="Password" required>
